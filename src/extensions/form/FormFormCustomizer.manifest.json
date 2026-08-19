@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-extension-manifest.schema.json",
+  "id": "f79cca91-406d-4369-8e63-db4b71692545",
+  "alias": "FormFormCustomizer",
+  "componentType": "Extension",
+  "extensionType": "FormCustomizer",
+  "version": "*",
+  "manifestVersion": 2,
+  "requiresCustomScript": false,
+  "properties": {
+    "configFileUrl": "/SiteAssets/sample-document-form.xml"
+  }
+}

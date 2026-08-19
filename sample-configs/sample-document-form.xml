@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Form title="Document metadata">
+  <Field internalName="Title" type="text" label="Title" required="true" />
+  <Field internalName="DocumentDate" type="date" label="Document date" />
+  <Field internalName="DocumentStatus" type="dropdown" label="Status">
+    <Option value="Draft">Draft</Option>
+    <Option value="InReview">In review</Option>
+    <Option value="Approved">Approved</Option>
+    <Option value="Archived">Archived</Option>
+  </Field>
+  <Field internalName="Amount" type="number" label="Amount" />
+  <Field internalName="Notes" type="richtext" label="Notes" />
+</Form>

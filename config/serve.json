@@ -1,0 +1,53 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/spfx-serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://intrrusttest.sharepoint.com/sites/Markos1/_layouts/15/SPListForm.aspx",
+      "formCustomizer": {
+        "componentId": "f79cca91-406d-4369-8e63-db4b71692545",
+        "PageType": 8,
+        "RootFolder": "/sites/Markos1/Lists/list1",
+        "properties": {
+          "configFileUrl": "/SiteAssets/sample-document-form.xml"
+        }
+      }
+    },
+    "form_NewForm": {
+      "pageUrl": "https://intrrusttest.sharepoint.com/sites/Markos1/_layouts/15/SPListForm.aspx",
+      "formCustomizer": {
+        "componentId": "f79cca91-406d-4369-8e63-db4b71692545",
+        "PageType": 8,
+        "RootFolder": "/sites/Markos1/Lists/list1",
+        "properties": {
+          "configFileUrl": "/SiteAssets/sample-document-form.xml"
+        }
+      }
+    },
+    "form_EditForm": {
+      "pageUrl": "https://intrrusttest.sharepoint.com/sites/Markos1/_layouts/15/SPListForm.aspx",
+      "formCustomizer": {
+        "componentId": "f79cca91-406d-4369-8e63-db4b71692545",
+        "PageType": 6,
+        "RootFolder": "/sites/Markos1/Lists/list1",
+        "ID": 22,
+        "properties": {
+          "configFileUrl": "/SiteAssets/sample-document-form.xml"
+        }
+      }
+    },
+    "form_ViewForm": {
+      "pageUrl": "https://intrrusttest.sharepoint.com/sites/Markos1/_layouts/15/SPListForm.aspx",
+      "formCustomizer": {
+        "componentId": "f79cca91-406d-4369-8e63-db4b71692545",
+        "PageType": 4,
+        "RootFolder": "/sites/Markos1/Lists/list1",
+        "ID": 22,
+        "properties": {
+          "configFileUrl": "/SiteAssets/sample-document-form.xml"
+        }
+      }
+    }
+  }
+}
