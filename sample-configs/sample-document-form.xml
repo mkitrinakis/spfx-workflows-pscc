@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Form title="Document metadata">
+<Form title="Document metadata"
+      onSave="RestrictPermissionsToAssignedTo"
+      onSaveParams="personField=AssignedTo">
   <Field internalName="Title" type="text" label="Title" required="true" />
   <Field internalName="DocumentDate" type="date" label="Document date" />
   <Field internalName="DocumentStatus" type="dropdown" label="Status">
@@ -9,5 +11,25 @@
     <Option value="Archived">Archived</Option>
   </Field>
   <Field internalName="Amount" type="number" label="Amount" />
+  <Field internalName="AssignedTo" type="person" label="Assigned to" required="true" />
+  <Field internalName="DepartmentCode" type="lookupdropdown" label="Department">
+    <Lookup list="Departments"
+            valueField="DepartmentCode"
+            displayFields="Title,DepartmentCode"
+            orderBy="Title asc"
+            maxItems="500" />
+  </Field>
+  <Field internalName="VendorRef" type="lookuptypeahead" label="Vendor">
+    <Lookup list="Vendors"
+            siteUrl="https://yourtenant.sharepoint.com/sites/procurement"
+            valueField="VendorCode"
+            displayFields="Title,VendorCode"
+            orderBy="Title asc"
+            minChars="2"
+            pageSize="25" />
+  </Field>
   <Field internalName="Notes" type="richtext" label="Notes" />
+  <Button action="RestrictPermissionsToAssignedTo"
+          label="Lock permissions"
+          params="personField=AssignedTo" />
 </Form>

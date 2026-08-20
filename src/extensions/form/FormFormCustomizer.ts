@@ -8,9 +8,13 @@ import {
   FormRenderer,
   FormConfigLoader,
   ListItemService,
+  ActionExecutionService,
   FormValues,
+  IFormButtonConfig,
   IFormConfig
 } from 'workflows-core';
+
+import { registerLocalActions } from './actions/registerLocalActions';
 
 const LOG_SOURCE: string = 'FormFormCustomizer';
 
@@ -23,6 +27,7 @@ export default class FormFormCustomizer
 
   private formRenderer: FormRenderer | undefined;
   private listItemService: ListItemService | undefined;
+  private actionExecutionService: ActionExecutionService | undefined;
   private formConfig: IFormConfig | undefined;
   private initialValues: FormValues = {};
   private loadError: string | undefined;
@@ -39,13 +44,15 @@ export default class FormFormCustomizer
     }
 
     this.listItemService = new ListItemService(this.context);
+    this.actionExecutionService = new ActionExecutionService();
+    registerLocalActions();
     const configLoader = new FormConfigLoader(this.context);
     this.isReadOnly = this.displayMode === FormDisplayMode.Display;
 
     try {
       const xmlText = await configLoader.loadXml(this.properties.configFileUrl);
       this.formConfig = FormConfigParser.parse(xmlText);
-      const fieldNames = this.formConfig.fields.map((field) => field.internalName);
+      const fieldNames = this.formConfig.fields;
       this.initialValues = await this.listItemService.loadFieldValues(fieldNames, this.displayMode);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error while rendering form.';
@@ -79,7 +86,10 @@ export default class FormFormCustomizer
       initialValues: this.initialValues,
       isReadOnly: this.isReadOnly,
       showSaveButton: !this.isReadOnly,
-      onSave: async (values: FormValues) => this.handleSave(this.listItemService!, values)
+      formContext: this.context,
+      onSave: async (values: FormValues) => this.handleSave(this.listItemService!, values),
+      onActionButton: async (buttonConfig: IFormButtonConfig, values: FormValues) =>
+        this.handleActionButton(buttonConfig, values)
     });
 
     this.formRenderer.render();
@@ -96,9 +106,43 @@ export default class FormFormCustomizer
     listItemService: ListItemService,
     values: FormValues
   ): Promise<FormValues> {
-    const savedValues = await listItemService.saveFieldValues(values, this.displayMode);
+    const saveResult = await listItemService.saveFieldValues(
+      values,
+      this.displayMode,
+      this.formConfig!.fields
+    );
+
+    if (this.formConfig!.onSaveActions && this.formConfig!.onSaveActions.length > 0) {
+      await this.actionExecutionService!.runOnSaveActions(this.formConfig!, {
+        context: this.context,
+        itemId: saveResult.itemId,
+        formValues: saveResult.values,
+        fields: this.formConfig!.fields,
+        displayMode: this.displayMode
+      });
+    }
+
     this.formSaved();
-    return savedValues;
+    return saveResult.values;
+  }
+
+  private async handleActionButton(
+    buttonConfig: IFormButtonConfig,
+    values: FormValues
+  ): Promise<void> {
+    const itemId = this.displayMode === FormDisplayMode.New ? 0 : this.context.itemId;
+
+    if (!itemId) {
+      throw new Error('Save the item before running this action.');
+    }
+
+    await this.actionExecutionService!.runButtonAction(buttonConfig, {
+      context: this.context,
+      itemId: itemId,
+      formValues: values,
+      fields: this.formConfig!.fields,
+      displayMode: this.displayMode
+    });
   }
 
   private renderLoading(): void {
