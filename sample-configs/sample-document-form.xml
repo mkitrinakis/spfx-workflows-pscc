@@ -2,16 +2,16 @@
 <Form title="Document metadata"
       onSave="RestrictPermissionsToAssignedTo"
       onSaveParams="personField=AssignedTo">
-  <Field internalName="Title" type="text" label="Title" required="true" />
-  <Field internalName="DocumentDate" type="date" label="Document date" />
-  <Field internalName="DocumentStatus" type="dropdown" label="Status">
+  <Field internalName="Title" type="text" label="Title" required="true" defaultValue="New document" />
+  <Field internalName="DocumentDate" type="date" label="Document date" defaultValue="2026-08-21" />
+  <Field internalName="DocumentStatus" type="dropdown" label="Status" defaultValue="Draft">
     <Option value="Draft">Draft</Option>
     <Option value="InReview">In review</Option>
     <Option value="Approved">Approved</Option>
     <Option value="Archived">Archived</Option>
   </Field>
-  <Field internalName="Amount" type="number" label="Amount" />
-  <Field internalName="AssignedTo" type="person" label="Assigned to" required="true" />
+  <Field internalName="Amount" type="number" label="Amount" defaultValue="0" />
+  <Field internalName="AssignedTo" type="person" label="Assigned to" required="true" defaultValue="mkitrinakis@teamtrust.gr" />
   <Field internalName="DepartmentCode" type="lookupdropdown" label="Department">
     <Lookup list="Departments"
             valueField="DepartmentCode"
@@ -21,7 +21,7 @@
   </Field>
   <Field internalName="VendorRef" type="lookuptypeahead" label="Vendor">
     <Lookup list="Vendors"
-            siteUrl="https://yourtenant.sharepoint.com/sites/procurement"
+            siteUrl="/sites/procurement"
             valueField="VendorCode"
             displayFields="Title,VendorCode"
             orderBy="Title asc"

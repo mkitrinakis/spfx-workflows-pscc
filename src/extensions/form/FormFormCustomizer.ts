@@ -9,6 +9,7 @@ import {
   FormConfigLoader,
   ListItemService,
   ActionExecutionService,
+  FormDefaultValues,
   FormValues,
   IFormButtonConfig,
   IFormConfig
@@ -54,6 +55,10 @@ export default class FormFormCustomizer
       this.formConfig = FormConfigParser.parse(xmlText);
       const fieldNames = this.formConfig.fields;
       this.initialValues = await this.listItemService.loadFieldValues(fieldNames, this.displayMode);
+
+      if (this.displayMode === FormDisplayMode.New) {
+        this.initialValues = FormDefaultValues.apply(this.formConfig.fields, this.initialValues);
+      }
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error while rendering form.';
       Log.error(LOG_SOURCE, new Error(message));
